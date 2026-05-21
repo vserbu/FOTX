@@ -1,0 +1,71 @@
+============================================================
+  FFmpeg Text Editor - Desktop Aplikacija
+  UPUTE ZA INSTALACIJU I POKRETANJE
+============================================================
+
+📦 ŠTO TREBAŠ:
+
+1. Node.js (v18 ili noviji)
+   - Preuzmi: https://nodejs.org/
+   - Instaliraj i restartaj računalo
+
+============================================================
+
+🚀 POKRETANJE:
+
+1. Ekstraktuj ZIP datoteku u folder (npr. C:\ffmpeg-text-editor)
+
+2. Otvori CMD ili PowerShell u tom folderu:
+   - U File Explorer-u, drži SHIFT + desni klik u folderu
+   - Odaberi "Open PowerShell window here" ili "Otvori naredbeni prozor ovdje"
+
+3. Instaliraj dependencies (samo prvi put):
+   
+   npm install
+
+   (Ovo će trajati 2-3 minute, preuzima potrebne pakete)
+
+4. Pokreni aplikaciju:
+   
+   npm start
+
+   Desktop aplikacija će se otvoriti!
+
+============================================================
+
+🏗️ KREIRANJE INSTALERA (Opciono):
+
+Ako želiš kreirati instalacijsku .exe datoteku:
+
+Za Windows:
+   npm run build:win
+
+Instaler će biti u "dist" folderu.
+
+============================================================
+
+💡 KAKO KORISTITI:
+
+1. Klikni "Odaberi Video Datoteku"
+2. Odaberi gdje želiš spremiti video
+3. Dodaj tekstove s vremenima
+4. Klikni "Procesuj Video"
+5. Pričekaj da završi
+6. Gotov video je na lokaciji koju si odabrao!
+
+============================================================
+
+❓ PROBLEMI?
+
+Problem: "npm nije prepoznat"
+Rješenje: Instaliraj Node.js i restartaj CMD
+
+Problem: Aplikacija se ne pokreće
+Rješenje: Obriši "node_modules" folder i pokreni "npm install" ponovno
+
+Problem: FFmpeg greška
+Rješenje: FFmpeg je automatski uključen, provjerite log u aplikaciji
+
+============================================================
+
+📧 Kontakt: FFmpeg Text Editor

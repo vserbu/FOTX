@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOTX - FFmpeg Overlay Text</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main content area -->
+        <div class="content-wrapper">
+            <!-- Left Panel - Video Preview & Controls -->
+            <div class="left-panel">
+                <div class="video-info-bar" id="videoInfoBar" style="display: none;">
+                    <div class="info-item">
+                        <span class="info-label">Video:</span>
+                        <span class="info-value" id="videoNameDisplay">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Trajanje:</span>
+                        <span class="info-value" id="videoDurationDisplay">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Rezolucija:</span>
+                        <span class="info-value" id="videoResolution">-</span>
+                    </div>
+                </div>
+
+                <div class="preview-section" id="previewSection">
+                    <div class="preview-empty" id="previewEmpty">
+                        <div class="empty-icon">🎬</div>
+                        <p>Otvorite video da počnete</p>
+                        <p class="help-text">Datoteka → Otvori Video ili pritisnite Ctrl+O</p>
+                    </div>
+                    <canvas id="previewCanvas" class="preview-canvas" style="display: none;"></canvas>
+                </div>
+
+                <div class="video-controls" id="videoControls" style="display: none;">
+                    <button class="control-btn" id="playBtn">▶</button>
+                    <input type="range" id="timelineSlider" class="timeline-slider" min="0" max="100" value="0">
+                    <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                </div>
+            </div>
+
+            <!-- Right Panel - Text Editor & Timeline -->
+            <div class="right-panel">
+                <!-- Text Editor -->
+                <div class="editor-section">
+                    <h3 class="section-title">✏️ Uređivanje Teksta</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label for="textContent">Tekst</label>
+                            <textarea id="textContent" placeholder="Unesite tekst (Enter za novi red)..." rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startTime">Početak (s)</label>
+                            <input type="number" id="startTime" value="0" min="0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">Kraj (s)</label>
+                            <input type="number" id="endTime" value="5" min="0" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fontSize">Veličina (px)</label>
+                            <input type="number" id="fontSize" value="60" min="12" max="400">
+                            <p class="help-text">Veličina u pikselima kao u videu</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="textAlign">Poravnanje</label>
+                            <select id="textAlign">
+                                <option value="left" selected>Lijevo</option>
+                                <option value="center">Centar</option>
+                                <option value="right">Desno</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-2">
+                            <label for="fontFamily">Font</label>
+                            <select id="fontFamily">
+                                <option value="Arial" selected>Arial</option>
+                            </select>
+                            <p class="help-text">Učitavanje fontova s računala...</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pozicija</label>
+                            <div class="position-grid">
+                                <button type="button" class="pos-btn-grid" data-position="top-left" title="Gore lijevo">↖</button>
+                                <button type="button" class="pos-btn-grid" data-position="top" title="Gore centar">⬆</button>
+                                <button type="button" class="pos-btn-grid" data-position="top-right" title="Gore desno">↗</button>
+                                <button type="button" class="pos-btn-grid" data-position="left" title="Lijevo">⬅</button>
+                                <button type="button" class="pos-btn-grid active" data-position="center" title="Centar">⊙</button>
+                                <button type="button" class="pos-btn-grid" data-position="right" title="Desno">➡</button>
+                                <button type="button" class="pos-btn-grid" data-position="bottom-left" title="Dolje lijevo">↙</button>
+                                <button type="button" class="pos-btn-grid" data-position="bottom" title="Dolje centar">⬇</button>
+                                <button type="button" class="pos-btn-grid" data-position="bottom-right" title="Dolje desno">↘</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="textColor">Boja Teksta</label>
+                            <input type="color" id="textColor" value="#ffffff">
+                        </div>
+                        <div class="form-group">
+                            <label for="bgColor">Boja Pozadine</label>
+                            <input type="color" id="bgColor" value="#000000">
+                        </div>
+                        <div class="form-group">
+                            <label for="bgOpacity">Prozirnost (%)</label>
+                            <input type="number" id="bgOpacity" value="70" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="addTextBtn">➕ Dodaj Tekst</button>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline-section">
+                    <div class="section-header">
+                        <h3 class="section-title">🎬 Vremenska Linija</h3>
+                        <button class="btn-icon" id="clearAllBtn" title="Obriši sve">🗑️</button>
+                    </div>
+                    
+                    <!-- Visual Timeline Bar -->
+                    <div class="visual-timeline" id="visualTimeline" style="display: none;">
+                        <div class="timeline-track" id="timelineTrack">
+                            <!-- Segments will be added here -->
+                        </div>
+                        <div class="timeline-time-labels" id="timelineTimeLabels"></div>
+                    </div>
+                    
+                    <div class="timeline-container" id="timeline">
+                        <div class="timeline-empty">
+                            <p>Nema tekstova</p>
+                            <p class="help-text">Dodajte tekstove gore</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar - Processing -->
+        <div class="bottom-bar">
+            <div class="output-path" id="outputPathDisplay">
+                <span class="label">Spremanje:</span>
+                <span class="path">Odaberite lokaciju (Datoteka → Odaberi Lokaciju)</span>
+            </div>
+            <div class="process-controls">
+                <button class="btn btn-process" id="processBtn" disabled>🎬 Obradite Video</button>
+                <button class="btn btn-stop" id="stopBtn" style="display: none;">⏹ Zaustavi</button>
+            </div>
+        </div>
+
+        <!-- Progress overlay -->
+        <div class="progress-overlay" id="progressOverlay" style="display: none;">
+            <div class="progress-content">
+                <h3>Obrada Videa</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">0%</p>
+                <details class="log-details">
+                    <summary>FFmpeg Log</summary>
+                    <div class="log-output" id="logOutput"></div>
+                </details>
+            </div>
+        </div>
+    </div>
+    
+    <script src="renderer.js"></script>
+</body>
+</html>
