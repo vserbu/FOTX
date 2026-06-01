@@ -1,7 +1,14 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
+let ffmpegPath = ffmpegInstaller.path;
+
+// Fix path for Electron packaged app (app.asar → app.asar.unpacked)
+if (ffmpegPath.includes('app.asar')) {
+    ffmpegPath = ffmpegPath.replace('app.asar', 'app.asar.unpacked');
+}
+console.log('FFmpeg path:', ffmpegPath);
 const fs = require('fs');
 
 let mainWindow;

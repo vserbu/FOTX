@@ -299,7 +299,7 @@ async function loadVideo(filePath) {
     });
     
     videoElement.addEventListener('timeupdate', () => {
-        if (isPlaying) {
+        if (isPlaying && videoDuration > 0) {
             const progress = (videoElement.currentTime / videoDuration) * 100;
             timelineSlider.value = progress;
             updateTimeDisplay();
@@ -333,7 +333,7 @@ async function loadVideo(filePath) {
         
         videoInfoBar.style.display = 'flex';
         
-        if (parseFloat(endTime.value) === 5) {
+        if (parseFloat(endTime.value) === 15 || parseFloat(endTime.value) === 5) {
             endTime.value = Math.min(15, videoDuration);
         }
         
@@ -432,6 +432,21 @@ function renderPreview() {
             drawTextOnCanvas(ctx, item);
         }
     });
+    
+    // Draw live preview for new text being typed (not yet added)
+    if (editingIndex < 0 && textContent && textContent.value.trim()) {
+        const previewItem = {
+            text: textContent.value,
+            fontSize: parseInt(fontSize.value) || 48,
+            textColor: textColor.value || '#ffffff',
+            bgColor: bgColor.value || '#000000',
+            bgOpacity: parseFloat(bgOpacity.value) || 0.5,
+            position: selectedPosition || 'bottom-center',
+            align: selectedAlign || 'center',
+            fontFamily: fontFamily.value || 'Arial'
+        };
+        drawTextOnCanvas(ctx, previewItem);
+    }
 }
 
 // Draw text on canvas with multi-line and alignment support
@@ -563,59 +578,57 @@ positionButtons.forEach(btn => {
         selectedPosition = btn.dataset.position;
         console.log('Selected position is now:', selectedPosition);
         
-        // If editing, update preview immediately
+        // If editing, update item; always update preview
         if (editingIndex >= 0 && textItems[editingIndex]) {
             textItems[editingIndex].position = selectedPosition;
-            renderPreview();
         }
+        renderPreview();
     });
 });
 
 // Text align
 textAlign.addEventListener('change', (e) => {
     selectedAlign = e.target.value;
-    
-    // If editing, update preview immediately
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].align = selectedAlign;
-        renderPreview();
     }
+    renderPreview();
 });
 
-// Live preview updates for all controls when editing
+// Live preview updates for all controls
 fontSize.addEventListener('input', () => {
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].fontSize = parseInt(fontSize.value);
-        renderPreview();
     }
+    renderPreview();
 });
 
 textColor.addEventListener('input', () => {
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].textColor = textColor.value;
-        renderPreview();
     }
+    renderPreview();
 });
 
 bgColor.addEventListener('input', () => {
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].bgColor = bgColor.value;
-        renderPreview();
     }
+    renderPreview();
 });
 
 bgOpacity.addEventListener('input', () => {
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].bgOpacity = parseInt(bgOpacity.value);
-        renderPreview();
     }
+    renderPreview();
 });
 
 textContent.addEventListener('input', () => {
     if (editingIndex >= 0 && textItems[editingIndex]) {
         textItems[editingIndex].text = textContent.value;
-        renderPreview();
     }
+    renderPreview(); // Always update preview
 });
 
 // Add text
