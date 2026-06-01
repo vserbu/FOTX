@@ -2,14 +2,15 @@
 
 **F**fmpeg **O**verlay **Te**x**t** - Desktop application for adding text overlays to videos using FFmpeg.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/vserbu/fotx/releases)
+[![Version](https://img.shields.io/badge/version-1.0.4-blue.svg)](https://github.com/vserbu/fotx/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ## ✨ Features
 
 - **True WYSIWYG Preview** - Pixel-perfect preview matching final video output
+- **Live Preview While Typing** - Text appears on video instantly as you type
 - **Automatic Word Wrap** - Text automatically wraps at 80% screen width
-- **Live Preview Updates** - See changes instantly while editing
+- **Real-time Position Updates** - Move text anywhere and see it instantly
 - **Save/Load Projects** - Continue editing later with `.ftep` project files
 - **Multi-line Text Support** - Press Enter for manual line breaks
 - **9-Position Grid** - Place text anywhere on screen
@@ -50,9 +51,10 @@ Creates a standalone `.exe` installer (~150-200MB) with embedded Node.js, FFmpeg
 ## 📖 Usage
 
 1. **Open Video** - File → Open Video (Ctrl+O)
-2. **Add Text** - Enter text, set timing, choose position and font
-3. **Preview** - See exactly how it will look in the final video
-4. **Process** - Click "Process Video" to render
+2. **Type Text** - Text appears on video instantly as you type
+3. **Set Position** - Click grid to move text, updates in real-time
+4. **Add Text** - Click "Add Text" to confirm
+5. **Process** - Click "Process Video" to render
 
 ### Keyboard Shortcuts
 - **Ctrl+O** - Open video
@@ -65,6 +67,9 @@ Creates a standalone `.exe` installer (~150-200MB) with embedded Node.js, FFmpeg
 
 ### True WYSIWYG Preview
 Canvas renders at actual video resolution (e.g., 1920x1080) and scales down for display. What you see is exactly what you get in the final video.
+
+### Live Preview While Typing
+Start typing and your text appears on the video immediately — no need to click "Add" first. Change font, color, size, or position and see updates instantly.
 
 ### Automatic Word Wrap
 Text automatically wraps to new lines when reaching 80% of screen width. Uses Canvas `measureText()` for pixel-perfect accuracy in both preview and final video.
@@ -121,16 +126,13 @@ fotx/
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
-### Current Version: 1.0.0 (Stable)
+### Current Version: 1.0.4 (Stable)
 
-**Key Features:**
-- True WYSIWYG preview with pixel-perfect rendering
-- Automatic word wrap with Canvas measureText
-- System font selection
-- Lossless quality output by default
-- Save/Load project functionality
-- Live preview updates
-- Multi-language support (Croatian/English)
+**What's new:**
+- Live preview while typing text
+- Real-time position updates
+- FFmpeg path fix for packaged app
+- All controls update preview instantly
 
 ## 🤝 Contributing
 
